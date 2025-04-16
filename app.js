@@ -45,13 +45,13 @@ app.use(express.json({ limit: "50mb" })); // Adjust size as needed
 app.use(express.urlencoded({ extended: true, limit: "50mb" }));
 app.use(cookieParser());
 
-app.use(bodyParser.json());
-app.get('/', (req, res) => {
-  res.render("index");
-});
-app.get('/login', (req, res) => {
-  res.render("login");
-})
+// app.use(bodyParser.json());
+// app.get('/', (req, res) => {
+//   res.render("index");
+// });
+// app.get('/login', (req, res) => {
+//   res.render("login");
+// })
 
 const isLoggedIn = (req, res, next) => {
   console.log("🔍 Checking authentication...");
