@@ -22,7 +22,7 @@ app.use(
     origin: function (origin, callback) {
       const allowedOrigins = [
         "https://one-famous-sculpin.ngrok-free.app","positive-liberal-treefrog.ngrok-free.app","personally-allowing-lacewing.ngrok-free.app",
-        "http://localhost:5173","https://juristi-q.vercel.app/"
+        "http://localhost:5173","https://juristi-q.vercel.app"
       ];
 
       if (!origin || allowedOrigins.includes(origin)) {
