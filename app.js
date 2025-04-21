@@ -437,7 +437,7 @@ app.post("/createcase", isLoggedIn, async (req, res) => {
       status,
       nextHearing: nextHearing, // Match field name in schema
       fees,
-       
+       amount_paid,
     });
     await newCase.save();
     user.cases.push(newCase._id);
@@ -459,7 +459,7 @@ app.put("/updatecase/:case_ref_no", async (req, res) => {
         status: req.body.status,
         nextHearing: req.body.nextHearing ? new Date(req.body.nextHearing) : null, // Convert to Date
         fees: req.body.fees,
-         
+         amount_paid: req.body.amount_paid,
       },
       { new: true }
     );
