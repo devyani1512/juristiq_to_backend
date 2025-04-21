@@ -1,4 +1,3 @@
-
 const express = require('express');
 const app = express();
 const connectDB = require("./db"); // Import connection function
@@ -23,7 +22,7 @@ app.use(
     origin: function (origin, callback) {
       const allowedOrigins = [
         "https://one-famous-sculpin.ngrok-free.app","positive-liberal-treefrog.ngrok-free.app","personally-allowing-lacewing.ngrok-free.app",
-        "http://localhost:5173","https://juristiqbackend.onrender.com/"
+        "http://localhost:5173","https://juristi-q.vercel.app"
       ];
 
       if (!origin || allowedOrigins.includes(origin)) {
@@ -41,18 +40,18 @@ const postModel = require("./models/post");
 const casesModel = require("./models/cases");
 const cookieParser = require('cookie-parser');
 const path = require('path');
-app.set("view engine", "ejs");
+
 app.use(express.json({ limit: "50mb" })); // Adjust size as needed
 app.use(express.urlencoded({ extended: true, limit: "50mb" }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
-app.use(bodyParser.json());
-app.get('/', (req, res) => {
-  res.render("index");
-});
-app.get('/login', (req, res) => {
-  res.render("login");
-})
+
+// app.use(bodyParser.json());
+// app.get('/', (req, res) => {
+//   res.render("index");
+// });
+// app.get('/login', (req, res) => {
+//   res.render("login");
+// })
 
 const isLoggedIn = (req, res, next) => {
   console.log("🔍 Checking authentication...");
@@ -141,9 +140,8 @@ app.post("/login", async (req, res) => {
     res.cookie("token", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production", // Set to true for production
-      sameSite: "Lax" // For cross-origin requests
+      sameSite: "none" // For cross-origin requests
     });
-    
 
     res.json({ message: "Login successful", token });
   } catch (error) {
@@ -428,7 +426,7 @@ app.get("/casesinfo", isLoggedIn, async (req, res) => {
 app.post("/createcase", isLoggedIn, async (req, res) => {
   let user = await userModel.findOne({ email: req.user.email });
   try {
-    const { case_ref_no, caseTitle, clientName, status, nextHearing, fees, pending_fees } = req.body;
+    const { case_ref_no, caseTitle, clientName, status, nextHearing, fees } = req.body;
 
     // Create a new case
     const newCase = await casesModel.create({
@@ -461,7 +459,7 @@ app.put("/updatecase/:case_ref_no", async (req, res) => {
         status: req.body.status,
         nextHearing: req.body.nextHearing ? new Date(req.body.nextHearing) : null, // Convert to Date
         fees: req.body.fees,
-        pending_fees: req.body. 
+         
       },
       { new: true }
     );
@@ -644,7 +642,7 @@ app.post("/createfee", isLoggedIn, async (req, res) => {
     const { case_ref_no, clientName, fees, amount_paid,   payment_mode, due_date, remarks } = req.body;
 
     // Check if all required fields are present
-    if (!case_ref_no || !clientName || !fees || !amount_paid || !pending_fees || !payment_mode || !due_date) {
+    if (!case_ref_no || !clientName || !fees || !amount_paid || !payment_mode || !due_date) {
       return res.status(400).json({ success: false, message: "All fields are required." });
     }
 
