@@ -7,7 +7,7 @@ const feesSchema = new mongoose.Schema({
   clientName: { type: String, required: true },
   fees: { type: Number, required: true },
   amount_paid: { type: Number, required: true },
-  pending_fees: { type: Number, required: true },
+  // pending_fees: { type: Number, required: true },
   payment_mode: { type: String, enum: ["Cash", "Card", "Online"], required: true },
   due_date: { type: Date, required: true },
   remarks: { type: String },
