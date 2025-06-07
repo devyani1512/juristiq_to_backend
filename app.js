@@ -137,12 +137,13 @@ app.post("/login", async (req, res) => {
     console.log("Generated token:", token);
 
     // Set cookie with token
-    res.cookie("token", token, {
-      httpOnly: true,
-      secure: true,
-      // secure: process.env.NODE_ENV === "production", // Set to true for production
-      sameSite: "none" // For cross-origin requests
-    });
+   res.cookie("token", token, {
+  httpOnly: true,
+  secure: true,
+  sameSite: "None",
+  maxAge: 24 * 60 * 60 * 1000 // 1 day in milliseconds
+});
+
 
     res.json({ message: "Login successful", token });
   } catch (error) {
