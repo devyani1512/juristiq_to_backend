@@ -427,29 +427,30 @@ app.get("/casesinfo", isLoggedIn, async (req, res) => {
 app.post("/createcase", isLoggedIn, async (req, res) => {
   let user = await userModel.findOne({ email: req.user.email });
   try {
-    const { case_ref_no, caseTitle, clientName, status, nextHearing, fees } = req.body;
+    const { case_ref_no, caseTitle, clientName, status, nextHearing, fees, amount_paid } = req.body;
 
-    // Create a new case
     const newCase = await casesModel.create({
       user: user._id,
       case_ref_no,
       caseTitle,
       clientName,
       status,
-      nextHearing: nextHearing, // Match field name in schema
+      nextHearing,
       fees,
-       amount_paid,
+      amount_paid,
     });
+
     await newCase.save();
     user.cases.push(newCase._id);
-
     await user.save();
+
     res.status(201).json({ success: true, message: "Case created successfully", case: newCase });
   } catch (error) {
     console.error("Error creating case:", error);
     res.status(500).json({ success: false, message: "Internal server error" });
   }
 });
+
 app.put("/updatecase/:case_ref_no", async (req, res) => {
   try {
     const updatedCase = await casesModel.findOneAndUpdate(
