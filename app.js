@@ -17,24 +17,31 @@ const moment = require('moment');
 const twilio = require('twilio');
 app.set("trust proxy", 1);
 const cors = require("cors");
+
+const allowedOrigins = [
+  "https://one-famous-sculpin.ngrok-free.app",
+  "https://positive-liberal-treefrog.ngrok-free.app",
+  "https://personally-allowing-lacewing.ngrok-free.app",
+  "http://localhost:5173",
+  "https://juristi-q.vercel.app"
+];
+
 app.use(
   cors({
     origin: function (origin, callback) {
-      const allowedOrigins = [
-        "https://one-famous-sculpin.ngrok-free.app","positive-liberal-treefrog.ngrok-free.app","personally-allowing-lacewing.ngrok-free.app",
-        "http://localhost:5173","https://juristi-q.vercel.app"
-      ];
-
       if (!origin || allowedOrigins.includes(origin)) {
         callback(null, true);
       } else {
+        console.log("❌ Blocked CORS for origin:", origin);
         callback(new Error("Not allowed by CORS"));
       }
     },
-    credentials: true, // Allow cookies/auth headers
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"]
   })
 );
+
 
 const postModel = require("./models/post");
 const casesModel = require("./models/cases");
